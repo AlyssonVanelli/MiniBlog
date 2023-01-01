@@ -1,64 +1,63 @@
-import styles from './Register.module.css'
+import styles from './register.module.css'
 
 import { useState, useEffect } from 'react'
-import { useAuthentication } from '../../hooks/useAuthentication';
+import { useAuthentication } from './../../hooks/useAuthentication';
 
-export const Register = () => {
-    const [displayName, setDisplayName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [error, setError] = useState('')
+function Register() {
+    const [displayName, setDisplayName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [error, setError] = useState("")
 
-    const { createUser, error: authError, loading } = useAuthentication();
+    const { createUser, error: authError, loading } = useAuthentication()
 
-    const handleSubmit = async (e) => {
+    const handleSubimt = async (e) => {
         e.preventDefault()
 
-        setError('')
+        setError("")
 
         const user = {
             displayName,
             email,
-            password
+            password,
         }
 
         if (password !== confirmPassword) {
-            setError('As senhas precisam ser iguais')
+            setError("As senhas precisam ser iguais!")
             return
         }
 
         const res = await createUser(user)
 
-        console.log(res)
     }
 
     useEffect(() => {
         if (authError) {
-            setError(authError);
+            setError(authError)
         }
-    }, [authError]);
+    }, [authError])
 
     return (
         <div className={styles.register}>
             <h1>Cadastre-se para postar</h1>
-            <p>Crie seu usuario e compartilhe suas hitórias</p>
-            <form onSubmit={handleSubmit}>
+            <p>Crie seu usuário e compartilhe suas hitórias</p>
+            <form onSubmit={handleSubimt}>
                 <label>
                     <span>Nome:</span>
-                    <input type="text" name='displayname' required placeholder='Nome do Usuario' value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                    <input type="text" name='displayName' required placeholder='Nome do usuários' value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                 </label>
                 <label>
                     <span>E-mail:</span>
-                    <input type="email" name='email' required placeholder='E-mail do usuario' value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="email" name='email' required placeholder='E-mail do usuários' value={email} onChange={(e) => setEmail(e.target.value)} />
                 </label>
                 <label>
                     <span>Senha:</span>
                     <input type="password" name='password' required placeholder='Insira sua senha' value={password} onChange={(e) => setPassword(e.target.value)} />
                 </label>
                 <label>
-                    <span>Confirmação de Senha:</span>
-                    <input type="password" name='confirmpassword' required placeholder='Confirma a sua senha' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                    <span>Confirmação de senha:</span>
+                    <input type="password" name='confirmPassword' required placeholder='Confirme a sua senha' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                 </label>
                 {!loading && <button className='btn'>Cadastrar</button>}
                 {loading && <button className='btn' disabled>Aguarde...</button>}
